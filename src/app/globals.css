@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  /* App palette (Schedulo prototype): warm paper, deep ink, forest green, clay accent. */
+  --color-primary: #2f6b55;
+  --color-primary-hover: #1f4d3d;
+  --color-primary-soft: #e4eee8;
+  --color-primary-ring: #bcd3c6;
+  --color-ink: #1d211f;         /* headings, primary text */
+  --color-ink-soft: #4a514d;    /* body text */
+  --color-muted: #6b716c;       /* secondary text, ~4.9:1 on paper */
+  --color-faint: #a9a498;       /* disabled / decorative only */
+  --color-line: #e3dfd6;        /* borders */
+  --color-line-soft: #ece8df;   /* inner dividers */
+  --color-line-strong: #cfc9bc; /* inputs, outlines */
+  --color-surface: #f3f1ec;     /* app background */
+  --color-paper: #fbfaf7;       /* sidebar, side panels */
+  --color-card: #fffdf9;        /* cards */
+  --color-hover: #efece5;       /* hover fill */
+  --color-accent: #d9704a;      /* brand dot */
+  --color-accent-ink: #b0552f;  /* eyebrows */
+  --color-danger: #b0412a;
+  --color-danger-soft: #f7e5dc;
+  --color-warn-soft: #f5ecd2;
+  --color-warn-ink: #7a5a0e;
+  --color-code: #1b1f1d;
+}
+
+:root {
+  /* Overridden per host on public booking pages. */
+  --brand: #2f6b55;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+@keyframes blur-in { from { opacity: 0; filter: blur(10px); transform: translateY(8px) } to { opacity: 1; filter: blur(0); transform: none } }
+.blur-in { animation: blur-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0s); }
+@media (prefers-reduced-motion: reduce) { .blur-in { animation: none !important; } }
+
+.text-brand { color: var(--brand); }
+.bg-brand { background-color: var(--brand); }
+.border-brand { border-color: var(--brand); }
+.bg-brand-soft { background-color: color-mix(in srgb, var(--brand) 13%, #fffdf9); }
+.hover\:bg-brand-soft:hover { background-color: color-mix(in srgb, var(--brand) 13%, #fffdf9); }
+.border-brand-soft { border-color: color-mix(in srgb, var(--brand) 32%, #fffdf9); }
+
+/* ---------------------------------------------------------------------------
+   Marketing landing (dark). New token names only; the app tokens above are untouched.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-background: hsl(260 87% 3%);
+  --color-foreground: hsl(40 6% 95%);
+  --color-hero-sub: hsl(40 6% 82%);
+  --font-display: "General Sans", var(--font-geist-sans), sans-serif;
+}
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 20%, rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* Faint ring for small glass tiles (icons, chips). */
+.glass-ring {
+  background: rgba(255, 255, 255, 0.01);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.text-gradient {
+  background-image: linear-gradient(to left, #6366f1, #a855f7, #fcd34d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes rise { from { opacity: 0; transform: translate3d(0, 18px, 0) } to { opacity: 1; transform: none } }
+@keyframes grad-shift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
+@keyframes drift-a { 0%, 100% { transform: translate(-10%, -6%) scale(1) } 50% { transform: translate(8%, 6%) scale(1.15) } }
+@keyframes drift-b { 0%, 100% { transform: translate(10%, 8%) scale(1.1) } 50% { transform: translate(-8%, -4%) scale(0.95) } }
+@keyframes feed-in { from { opacity: 0; transform: scale(0.7) translateY(-10px) } to { opacity: 1; transform: none } }
+@keyframes star-b { from { transform: translate(0, 0); opacity: 1 } to { transform: translate(-100%, 0); opacity: 0 } }
+@keyframes star-t { from { transform: translate(0, 0); opacity: 1 } to { transform: translate(100%, 0); opacity: 0 } }
+@keyframes soft-pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.35 } }
+
+.rise { animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: calc(var(--i, 0) * 80ms); }
+.gradient-shift { background-size: 300% 100%; animation: grad-shift 8s ease infinite; }
+
+@keyframes marquee { from { transform: translate3d(0, 0, 0) } to { transform: translate3d(-50%, 0, 0) } }
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Landing motion follows the design's respectReducedMotion prop (see _landing/motion-pref.ts):
+   only when the page opts in with data-rm="1" does the OS "reduce motion" setting stop it. */
+@media (prefers-reduced-motion: reduce) {
+  [data-rm="1"] .rise, [data-rm="1"] .gradient-shift, [data-rm="1"] [data-motion], [data-rm="1"] .marquee-track { animation: none !important; }
 }

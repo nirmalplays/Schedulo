@@ -1,0 +1,1 @@
+ALTER TABLE "date_overrides" ADD COLUMN "label" text;

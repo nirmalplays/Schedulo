@@ -1,0 +1,1 @@
+ALTER TABLE "event_types" ADD COLUMN "color" text DEFAULT '#8247f5' NOT NULL;
